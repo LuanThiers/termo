@@ -2,11 +2,11 @@ org 0x7e00
 jmp 0x0000:start
 
 data:
-	string1 times 16 db
-	string2 times 16 db
-	string3 times 16 db
-	string4 times 16 db
-	string5 times 16 db
+	string1 times 16 db 0
+	string2 times 16 db 0
+	string3 times 16 db 0
+	string4 times 16 db 0
+	string5 times 16 db 0
 
 start:
     xor ax, ax
