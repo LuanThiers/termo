@@ -4,21 +4,12 @@ jmp 0x0000:start
 
 data:
 	string dw 0
-<<<<<<< HEAD
 	string2 dw 0
 	string3 dw 0
 	string4 db 0
 	string5 db 0
 
     resposta db "navio"
-=======
-	string2 db 0
-	string3 db 0
-	string4 db 0
-	string5 db 0
-
-    	resposta db "navio"
->>>>>>> main
 
 start:
     xor ax, ax
@@ -67,7 +58,6 @@ gets:
         je .done
 
         jmp .loop
-<<<<<<< HEAD
 
         .backspace:
             cmp cl,0
@@ -85,15 +75,6 @@ gets:
             stosb
             ;call endl
             ret
-=======
-    .done:
-        call printchar
-        dec di
-        mov al, 0
-        stosb
-        ;call endl
-        ret
->>>>>>> main
 
 prints:
     lodsb
@@ -196,8 +177,4 @@ fim:
 
 
 times 510 - ($ - $$) db 0
-<<<<<<< HEAD
 dw 0xaa55 ; assinatura de boot
-=======
-dw 0xaa55 ; assinatura de boot
->>>>>>> main
