@@ -13,19 +13,32 @@ data:
 
 start:
     xor ax, ax
+    xor dx, dx 
     mov ds, ax
     mov es, ax
     
     call modoVideo
 
     ;tentativa 1
-    mov di, string
-    call gets
-
-    call compare_string
-
+    call looping 
+    
     call fim
 
+looping: 
+    .loop:
+        mov di, string	
+	mov bl, 15
+        push dx
+        call gets
+        pop dx
+        inc dx
+        push dx
+        call compare_string
+        call endl 
+        pop dx 
+        cmp dx, 7
+            jne .loop
+    ret 
 
 modoVideo:
     mov ah, 0
