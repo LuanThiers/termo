@@ -3,13 +3,8 @@ jmp 0x0000:start
 
 
 data:
-	string dw 0
-	string2 dw 0
-	string3 dw 0
-	string4 db 0
-	string5 db 0
-
-    resposta db "navio"
+	string db "00000",0
+    resposta db "navio",0
 
 start:
     xor ax, ax
@@ -184,6 +179,11 @@ compare_char:
             call printchar
             ret
 
+setcursor:
+    mov ah, 2
+    mov bh, 0
+    int 10h
+    ret
 
 fim:
     jmp $
