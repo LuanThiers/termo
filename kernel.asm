@@ -5,6 +5,17 @@ jmp 0x0000:start
 data:
 	string db "00000",0
     resposta db "navio",0
+    resposta_aux db "navio", 0
+    char0_aux db 0
+    char1_aux db 0
+    char2_aux db 0
+    char3_aux db 0
+    char4_aux db 0
+
+    verde db 10
+    roxo db 5
+    branco db 15
+    asterisco db 42
 
 start:
     xor ax, ax
@@ -13,8 +24,6 @@ start:
     mov es, ax
     
     call modoVideo
-
-    ;tentativa 1
     call looping 
     
     call fim
@@ -22,17 +31,28 @@ start:
 looping: 
     .loop:
         mov di, string	
-	mov bl, 15
+	    mov bl, 15
+        
         push dx
         call gets
         pop dx
         inc dx
+        
         push dx
-        call compare_string
-        call endl 
+        
+        call search_green
+        call search_purple
+        
         pop dx 
+        
+        mov byte[char0_aux], 0
+        mov byte[char1_aux], 0
+        mov byte[char2_aux], 0
+        mov byte[char3_aux], 0
+        mov byte[char4_aux], 0
+
         cmp dx, 7
-            jne .loop
+        jne .loop
     ret 
 
 modoVideo:
@@ -124,7 +144,67 @@ endl:
 
     ret
 
-compare_string:
+search_green:
+    mov si, string     ;caracteres em al
+    mov dx, 0           ;dx como indice de string
+
+    mov di, resposta    ;voltando ponteiro para o início de resposta
+    mov cx, 0           ;cx como indice de resposta
+
+    .loop:
+        lodsb
+        cmp dx, 5
+        je .end
+        cmp al, byte[di]
+        je .green
+        inc dx
+        inc cx
+        inc di
+        jmp .loop
+
+        .end:
+            ret
+        
+        .green:
+            ;mov bh, 0 
+            ;mov bl, [verde]
+            ;call printchar
+
+            cmp cx, 0
+            je .char0
+            cmp cx, 1
+            je .char1
+            cmp cx, 2
+            je .char2
+            cmp cx, 3
+            je .char3
+            cmp cx, 4
+            je .char4
+
+            .char0:
+                mov byte[char0_aux], 42
+                jmp .endgreen
+            .char1:
+                mov byte[char1_aux], 42
+                jmp .endgreen
+            .char2:
+                mov byte[char2_aux], 42
+                jmp .endgreen
+            .char3:
+                mov byte[char3_aux], 42
+                jmp .endgreen
+            .char4:
+                mov byte[char4_aux], 42
+                jmp .endgreen
+
+            .endgreen:
+                inc dx
+                inc cx
+                inc di
+                jmp .loop
+
+
+search_purple:
     mov si, string     ;caracteres em al
     mov dx, 0           ;dx como indice de string
 
@@ -137,10 +217,11 @@ compare_string:
         lodsb               ;pega próximo caracter de string e coloca em al
         call compare_char   ;comparar 1 caracter de string com resposta
         inc dx              ;incrementa contador de string  
-        
+
         jmp .loop_string
 
         .end:
+            call endl
             ret
 
 
@@ -149,35 +230,94 @@ compare_char:
     je .endcomp
     
     cmp al, byte[di]  ;al = caracter de string, di = caracter de resposta
-    je .definecolor   ;se forem iguais, a letra tá na palavra: será verde ou amarelo
-    inc di            ;próximo caracter de string
-    inc cx            ;incrementa contador de resposta
-    
-    jmp compare_char  
+    je .definecolor
+    jmp .rodaloop 
     
 
     .endcomp:           ;se acabou e não printou letra verde ou 
         mov bh, 0       ;amarelo, printa a letra branca
-        mov bl, 15 
+        mov bl, [branco] 
         call printchar
         ret
+    
+    .rodaloop:
+        inc di            ;próximo caracter de string
+        inc cx            ;incrementa contador de resposta
+        jmp compare_char 
+
+
 
     .definecolor:
-        cmp dx,cx           ;se contadores forem iguais, está na posição 
-        je .verde           ;certa: será verde
-        jmp .amarelo
+        cmp dx, cx           ;se contadores são iguais: posição certa(verde)
+        je .green           
+        
+        cmp cx, 0            ;se não está na posição certa, PODE ser roxo
+        je .checkasteristico0
+        cmp cx, 1            
+        je .checkasteristico1
+        cmp cx, 2
+        je .checkasteristico2
+        cmp cx, 3
+        je .checkasteristico3
+        cmp cx, 4 
+        je .checkasteristico4
 
-        .verde:
+        .checkasteristico0:
+            cmp byte[char0_aux], 42  ;se for * é pq é verde e já foi colocado
+            je .rodaloop
+            mov byte[char0_aux], 42
+            jmp .purple
+        
+        .checkasteristico1:
+            cmp byte[char1_aux], 42  ;se for * é pq é verde e já foi colocado
+            je .rodaloop
+            mov byte[char1_aux], 42
+            jmp .purple
+        
+        .checkasteristico2:
+            cmp byte[char2_aux], 42  ;se for * é pq é verde e já foi colocado
+            je .rodaloop
+            mov byte[char2_aux], 42
+            jmp .purple
+        
+        .checkasteristico3:
+            cmp byte[char3_aux], 42  ;se for * é pq é verde e já foi colocado
+            je .rodaloop
+            mov byte[char3_aux], 42
+            jmp .purple
+        
+        .checkasteristico4:
+            cmp byte[char4_aux], 42  ;se for * é pq é verde e já foi colocado
+            je .rodaloop
+            mov byte[char4_aux], 42
+            jmp .purple
+
+
+        .purple:
             mov bh, 0
-            mov bl, 10 ;cor verde
+            mov bl, [roxo] 
             call printchar
             ret
 
-        .amarelo:
+        .green:
             mov bh, 0
-            mov bl, 5 ;cor amarela
+            mov bl, [verde]
             call printchar
             ret
+
+         
+
+strcpy:
+    .loop1:
+        lodsb
+        stosb
+        cmp al, 0
+        je .endloop1
+        jmp .loop1
+
+    .endloop1:
+        ret
+
 
 setcursor:
     mov ah, 2
