@@ -3,7 +3,7 @@ jmp 0x0000:start
 
 
 data:
-	string db "00000",0
+    string db "00000",0
     resposta db "navio",0
     resposta_aux db "navio", 0
     char0_aux db 0
@@ -11,18 +11,50 @@ data:
     char2_aux db 0
     char3_aux db 0
     char4_aux db 0
-
+    termoo db "TERMOO", 0
     verde db 10
     roxo db 5
     branco db 15
     asterisco db 42
+    flag db 0
+    linha db 0
+    coluna db 17
+    
 
 start:
     xor ax, ax
-    xor dx, dx 
+    xor dx, dx  
     mov ds, ax
     mov es, ax
-    
+
+    call modoVideo
+
+    mov dh, 4
+    mov dl, 17
+    call setcursor
+
+    mov al, 'T'
+    call printchar
+
+    mov al, 'E'
+    call printchar
+
+    mov al, 'R'
+    call printchar
+
+    mov al, 'M'
+    call printchar
+
+    mov al, 'O'
+    call printchar
+
+    call getchar
+
+    cmp al, 49
+    jne start
+
+    xor dx, dx
+    xor ax, ax
     call modoVideo
     call looping 
     
@@ -30,16 +62,29 @@ start:
 
 looping: 
     .loop:
-        mov di, string	
-	    mov bl, 15
+
+        inc byte[linha]
+        mov byte[coluna], 17
+        mov di, string  
+        mov bl, 15
         
         push dx
+
+        mov dl, 17
+        mov dh, byte[linha]
+        call setcursor
+
         call gets
+        call endl
+
+        inc byte[flag]
+
         pop dx
         inc dx
-        
+
         push dx
         
+
         call search_green
         call search_purple
         
@@ -81,6 +126,7 @@ gets:
 
         inc cx
         stosb
+        
         call printchar
         cmp al, 0x0d ;0x0d = 13 = enter
         je .done
@@ -145,6 +191,7 @@ endl:
     ret
 
 search_green:
+
     mov si, string     ;caracteres em al
     mov dx, 0           ;dx como indice de string
 
@@ -152,6 +199,7 @@ search_green:
     mov cx, 0           ;cx como indice de resposta
 
     .loop:
+
         lodsb
         cmp dx, 5
         je .end
@@ -166,9 +214,6 @@ search_green:
             ret
         
         .green:
-            ;mov bh, 0 
-            ;mov bl, [verde]
-            ;call printchar
 
             cmp cx, 0
             je .char0
@@ -237,7 +282,19 @@ compare_char:
     .endcomp:           ;se acabou e não printou letra verde ou 
         mov bh, 0       ;amarelo, printa a letra branca
         mov bl, [branco] 
+
+        push dx
+        xor dx, dx
+        mov dl, byte[coluna]
+        mov dh, byte[linha]
+        call setcursor
+
         call printchar
+
+        xor dx, dx
+        inc byte[coluna]
+        pop dx
+        
         ret
     
     .rodaloop:
@@ -266,43 +323,68 @@ compare_char:
             cmp byte[char0_aux], 42  ;se for * é pq é verde e já foi colocado
             je .rodaloop
             mov byte[char0_aux], 42
+            ;push dx
             jmp .purple
         
         .checkasteristico1:
             cmp byte[char1_aux], 42  ;se for * é pq é verde e já foi colocado
             je .rodaloop
             mov byte[char1_aux], 42
+            ;push dx
             jmp .purple
         
         .checkasteristico2:
             cmp byte[char2_aux], 42  ;se for * é pq é verde e já foi colocado
             je .rodaloop
             mov byte[char2_aux], 42
+            ;push dx
             jmp .purple
         
         .checkasteristico3:
             cmp byte[char3_aux], 42  ;se for * é pq é verde e já foi colocado
             je .rodaloop
             mov byte[char3_aux], 42
+            ;push dx
             jmp .purple
         
         .checkasteristico4:
             cmp byte[char4_aux], 42  ;se for * é pq é verde e já foi colocado
             je .rodaloop
             mov byte[char4_aux], 42
+            ;push dx
             jmp .purple
 
 
         .purple:
             mov bh, 0
-            mov bl, [roxo] 
+            mov bl, [roxo]
+            
+            push dx
+            xor dx, dx
+            mov dl, byte[coluna]
+            mov dh, byte[linha]
+            call setcursor
+
             call printchar
+            inc byte[coluna]
+            pop dx
+
             ret
 
         .green:
             mov bh, 0
             mov bl, [verde]
+
+            push dx
+            xor dx, dx
+            mov dl, byte[coluna]
+            mov dh, byte[linha]
+            call setcursor
+
             call printchar
+            inc byte[coluna]
+            pop dx
+
             ret
 
          
@@ -329,5 +411,5 @@ fim:
     jmp $
 
 
-times 510 - ($ - $$) db 0
+;times 510 - ($ - $$) db 0
 dw 0xaa55 ; assinatura de boot
