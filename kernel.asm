@@ -11,18 +11,13 @@ data:
     char2_aux db 0
     char3_aux db 0
     char4_aux db 0
-<<<<<<< HEAD
     
     termoo db "TERMOO", 0
     
-=======
-    termoo db "TERMOO", 0
->>>>>>> main
     verde db 10
     roxo db 5
     branco db 15
     asterisco db 42
-<<<<<<< HEAD
     
     flag db 0
     linha db 0
@@ -47,12 +42,6 @@ data:
             db 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 
             db 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 
             db 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 
-=======
-    flag db 0
-    linha db 0
-    coluna db 17
-    
->>>>>>> main
 
 start:
     xor ax, ax
@@ -60,37 +49,6 @@ start:
     mov ds, ax
     mov es, ax
 
-<<<<<<< HEAD
-=======
-    call modoVideo
-
-    mov dh, 4
-    mov dl, 17
-    call setcursor
-
-    mov al, 'T'
-    call printchar
-
-    mov al, 'E'
-    call printchar
-
-    mov al, 'R'
-    call printchar
-
-    mov al, 'M'
-    call printchar
-
-    mov al, 'O'
-    call printchar
-
-    call getchar
-
-    cmp al, 49
-    jne start
-
-    xor dx, dx
-    xor ax, ax
->>>>>>> main
     call modoVideo
 
     mov dh, 4
@@ -256,13 +214,6 @@ gets:
         cmp al,0x08
         je .backspace
 
-<<<<<<< HEAD
-=======
-        inc cx
-        stosb
-        
-        call printchar
->>>>>>> main
         cmp al, 0x0d ;0x0d = 13 = enter
         je .pre_done
 
@@ -566,10 +517,3 @@ setcursor:
 
 fim:
     jmp $
-<<<<<<< HEAD
-=======
-
-
-;times 510 - ($ - $$) db 0
-dw 0xaa55 ; assinatura de boot
->>>>>>> main
