@@ -4,7 +4,7 @@ jmp 0x0000:start
 
 data:
     string db "00000",0
-    resposta db "navio",0
+    resposta db "00000",0
     
     char0_aux db 0
     char1_aux db 0
@@ -25,6 +25,10 @@ data:
     venceu db 0
     derrota db "PERDEU TUDO!", 0
 
+    words db "anzol", 0, "beijo", 0, "curva", 0, "dardo", 0
+    number_words dw 4
+    lenght_words db 6 ;5 letras + 0
+    ticks db 0
 
     a_green db 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11,
             db 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11,
@@ -54,7 +58,6 @@ start:
     mov dh, 4
     mov dl, 17
     call setcursor
-
     call termo
     
     call getchar
@@ -65,6 +68,7 @@ start:
     xor dx, dx
     xor ax, ax
     call clear
+    call define_word
     call looping
 
     mov dh, 10
@@ -125,6 +129,7 @@ loop_letras:
 
 
 looping: 
+    call clear_reg
     .loop:
 
         inc byte[linha]
@@ -183,25 +188,21 @@ modoVideo:
     
     ret
 
-clear:                
-    ; set the cursor to top left-most corner of screen
-    mov dx, 0 
-    mov bh, 0      
-    mov ah, 0x2
-    int 0x10
+clear:   
+    ;seta cursor para canto esquerdo             
+    mov dx, 0  
+    call setcursor
 
-    ; print 2000 blank chars to clean  
+    ; printa 2000 blank chars
     mov cx, 2000 
     mov bh, 0
     mov al, 0x20 ; blank char
     mov ah, 0x9
     int 0x10
     
-    ; reset cursor to top left-most corner of screen
+    ; reseta cursor para canto esquerdo
     mov dx, 0 
-    mov bh, 0      
-    mov ah, 0x2
-    int 0x10
+    call setcursor
     ret
 
 
@@ -497,23 +498,73 @@ delay:
    int 15h
 ret
 
-strcpy:
-    .loop1:
-        lodsb
-        stosb
-        cmp al, 0
-        je .endloop1
-        jmp .loop1
-
-    .endloop1:
-        ret
-
 
 setcursor:
     mov ah, 2
     mov bh, 0
     int 10h
     ret
+
+
+clock:
+    mov ah, 0   ;lê relógio (conta ticks a partir de 00h) e salva em cx:dx
+    int 1ah 
+    mov [ticks], dx
+    ret
+
+define_word:
+    call clock
+
+    xor dx, dx
+    xor ax, ax
+    xor cx, cx
+
+    mov ax, [ticks]
+    mov cx, [number_words]
+    div cx                  ;divide ax por cx e coloca resto em dx
+    mov [ticks], dx         ;em ticks vai ter o índice da palavra que será usada
+
+    xor cx, cx
+    mov si, words           ;colocando as palavras em si
+    mov ax, [ticks]
+    mul byte[lenght_words]  ;multiplica o índice pelo tamanho das palavras para achar índice da 1 letra da palavra(ax)
+    mov dx, ax              ;coloca em dx o índice que quer chegar
+    sub dx, 1               ;voltando uma posição para não perder o primeiro caracter das palavras
+
+    .loop:
+        lodsb
+        cmp cx, dx
+        je .end
+        inc cx
+        jmp .loop
+        .end:
+            mov di, resposta        ;vai armazenar a resposta
+            call strcpy
+            ;mov si, resposta
+            ;call prints
+
+    ret
+
+
+strcpy:
+    xor cx, cx
+    .loop1:
+        lodsb
+        stosb
+        cmp cx, 6       ;se chegou em 6, copiou tudo que precisava pra resposta
+        je .endloop1
+        inc cx
+        jmp .loop1
+
+    .endloop1:
+        ret
+
+clear_reg:
+    xor ax, ax
+    xor dx, dx
+    xor cx, cx
+    ret
+
 
 fim:
     jmp $
