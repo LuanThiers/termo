@@ -1,3 +1,4 @@
+
 org 0x7e00
 jmp 0x0000:start
 
@@ -23,12 +24,17 @@ data:
     linha db 0
     coluna db 17
     venceu db 0
-    derrota db "PERDEU TUDO!", 0
+    derrota_msg db "PERDEU TUDO!", 0
+    vitoria_msg db "GANHOU TUDO!", 0
 
     words db "anzol", 0, "beijo", 0, "curva", 0, "dardo", 0
     number_words dw 4
     lenght_words db 6 ;5 letras + 0
     ticks db 0
+    aviso_roxo db 0
+    coluna_roxa db 0
+    contador_verde db 0
+    coluna_entrada db 0
 
     a_green db 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11,
             db 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11,
@@ -60,6 +66,15 @@ start:
     call setcursor
     call termo
     
+
+    mov dh, 10
+    mov dl, 17
+    call setcursor
+
+    xor dx, dx
+    mov si, a_green
+    call loop_letras
+
     call getchar
 
     cmp al, 49
@@ -71,16 +86,7 @@ start:
     call define_word
     call looping
 
-    mov dh, 10
-    mov dl, 13
-    call setcursor
-
-    mov si, derrota
-    call prints
-
-    call getchar
-
-    call fim
+    call derrota
 
 
 termo:
@@ -108,7 +114,6 @@ termo:
 
 loop_letras:
 
-    mov dx, 0
     mov cx, 0
     inc dx
     cmp dx, 16
@@ -125,7 +130,7 @@ loop_letras:
         jmp .loop1
 
     .done:
-        jmp $
+        ret
 
 
 looping: 
@@ -146,7 +151,7 @@ looping:
         call gets
         call endl
 
-        inc byte[flag]
+        ;inc byte[flag]
 
         pop dx
         inc dx
@@ -165,10 +170,37 @@ looping:
         mov byte[char3_aux], 0
         mov byte[char4_aux], 0
 
+        cmp byte[contador_verde], 5
+        je vitoria
+
+        mov byte[contador_verde], 0
+
         cmp dx, 7
         jne .loop
 
     ret 
+
+vitoria:
+    mov dh, 10
+    mov dl, 13
+    call setcursor
+
+    mov si, vitoria_msg
+    call prints
+
+    call getchar
+    jmp fim
+
+derrota:
+    mov dh, 10
+    mov dl, 13
+    call setcursor
+
+    mov si, derrota_msg
+    call prints
+
+    call getchar
+    jmp fim
 
 modoVideo:
     mov ah, 0
@@ -207,6 +239,7 @@ clear:
 
 
 gets:
+    mov byte[coluna_entrada], 17
     xor cx, cx ;contador = 0
     mov al,0
     .loop:
@@ -234,7 +267,12 @@ gets:
             inc cx
             stosb
 
+            mov dh, 15
+            mov dl, byte[coluna_entrada]
+            call setcursor
+
             call printchar
+            inc byte[coluna_entrada]
             jmp .loop
 
         .backspace:
@@ -243,11 +281,16 @@ gets:
             dec di
             dec cl
             mov byte[di],0
+            dec byte[coluna_entrada]
             call delchar
             jmp .loop
             
         .done:
+            mov dh, 15
+            mov dl, byte[coluna_entrada]
+            call setcursor
             call printchar
+            inc byte[coluna_entrada]
             mov al, 0
             stosb
 
@@ -383,6 +426,10 @@ compare_char:
     
 
     .endcomp:           ;se acabou e não printou letra verde ou 
+
+        cmp byte[aviso_roxo], 1
+        je .retorno
+
         mov bh, 0       ;amarelo, printa a letra branca
         mov bl, [branco] 
 
@@ -400,11 +447,14 @@ compare_char:
         
         ret
     
+    .retorno:
+        mov byte[aviso_roxo], 0
+        ret
+
     .rodaloop:
         inc di            ;próximo caracter de string
         inc cx            ;incrementa contador de resposta
         jmp compare_char 
-
 
 
     .definecolor:
@@ -426,39 +476,41 @@ compare_char:
             cmp byte[char0_aux], 42  ;se for * é pq é verde e já foi colocado
             je .rodaloop
             mov byte[char0_aux], 42
-            ;push dx
             jmp .purple
         
         .checkasteristico1:
             cmp byte[char1_aux], 42  ;se for * é pq é verde e já foi colocado
             je .rodaloop
             mov byte[char1_aux], 42
-            ;push dx
             jmp .purple
         
         .checkasteristico2:
             cmp byte[char2_aux], 42  ;se for * é pq é verde e já foi colocado
             je .rodaloop
             mov byte[char2_aux], 42
-            ;push dx
             jmp .purple
         
         .checkasteristico3:
             cmp byte[char3_aux], 42  ;se for * é pq é verde e já foi colocado
             je .rodaloop
             mov byte[char3_aux], 42
-            ;push dx
             jmp .purple
         
         .checkasteristico4:
             cmp byte[char4_aux], 42  ;se for * é pq é verde e já foi colocado
             je .rodaloop
             mov byte[char4_aux], 42
-            ;push dx
             jmp .purple
 
 
         .purple:
+
+            cmp byte[aviso_roxo], 0
+            je .printar_purple
+            jmp .rodaloop
+
+        .printar_purple:
+
             mov bh, 0
             mov bl, [roxo]
             
@@ -467,16 +519,21 @@ compare_char:
             mov dl, byte[coluna]
             mov dh, byte[linha]
             call setcursor
-
             call printchar
+
             inc byte[coluna]
             pop dx
 
-            ret
+            mov byte[aviso_roxo], 1
+
+            jmp .rodaloop  
 
         .green:
             mov bh, 0
             mov bl, [verde]
+
+            cmp byte[aviso_roxo], 1
+            je .letra_verde_dupla
 
             push dx
             xor dx, dx
@@ -488,16 +545,32 @@ compare_char:
             inc byte[coluna]
             pop dx
 
+            inc byte[contador_verde]
+
             ret
 
+        .letra_verde_dupla:
+            
+            mov byte[aviso_roxo], 0
+            push dx
+            xor dx, dx
+            dec byte[coluna]
+            mov dl, byte[coluna]
+            mov dh, byte[linha]
+            call setcursor
+
+            call printchar
+            inc byte[coluna]
+            pop dx
+
+            ret
          
 delay:
    mov ah, 86h
    mov cx,5
-   mov dx,500
+   mov dx,400
    int 15h
-ret
-
+    ret
 
 setcursor:
     mov ah, 2
