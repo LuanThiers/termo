@@ -20,8 +20,7 @@ data:
     linha db 0
     coluna db 17
     venceu db 0
-    parametro_cx dd 115
-    parametro_cx_final dd 131
+    parametro_dx db 142
 
     ;mensagens do tutorial
     title db "APRENDA COMO JOGAR", 0
@@ -36,15 +35,15 @@ data:
     derrota_msg db "PERDEU TUDO!", 0
     vitoria_msg db "GANHOU TUDO!", 0
     tentativas_msg db "Tentativas: ", 0
-    inicio_msg db "1 - START", 0
-    sair_msg db "esc - SAIR", 0
-    tutorial_msg db "T - TUTORIAL", 0
+    inicio_msg db "1 -> START", 0
+    sair_msg db "esc-> Sair", 0
+    tutorial_msg db "T-> Tutorial", 0
     strikes_msg db "Strikes: ", 0
-    continuar_msg db "1 - Continuar", 0
-    menu_msg db "2 - Menu", 0
-    nivel1 db "1 - NIVEL 1", 0
-    nivel2 db "2 - NIVEL 2", 0
-    nivel3 db "3 - NIVEL 3", 0
+    continuar_msg db "1-> Continuar", 0
+    menu_msg db "2-> Menu", 0
+    nivel1 db "1-> NIVEL 1", 0
+    nivel2 db "2-> NIVEL 2", 0
+    nivel3 db "3-> NIVEL 3", 0
 
     t db 16, 16, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 0, 0, 0, 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 0, 0, 0, 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11
     e db 16, 16, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 15, 15, 15, 15, 15, 5, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 15, 15, 15, 15, 15, 15, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
@@ -52,7 +51,8 @@ data:
     m db 16, 16, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 15, 5, 5, 15, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 0, 15, 15, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 15, 0, 0, 15, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 5, 5, 5, 15, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 5, 5, 5, 15, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 5, 5, 5, 15, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 5, 5, 5, 15, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 5, 5, 5, 15, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
     o db 16, 16, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 0, 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 0, 0, 0, 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 15, 15, 15, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 0, 0, 0, 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 0, 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11
     
-    
+    bloco_comprimento db 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 , 4,4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 , 4,4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 , 4,4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 , 4,4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 , 4
+    bloco_largura db 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 , 4
     ;variáveis para as palavras aleatórias
     words1 db "anzol", 0, "beijo", 0, "curva", 0, "dardo", 0,
          db "esqui", 0, "frevo", 0, "gaita", 0, "hotel", 0
@@ -88,7 +88,7 @@ start:
     mov ds, ax
     mov es, ax
     mov byte[win_strike], 0 ;resetando o numero de vitorias
-    mov byte[linha], 3
+    mov byte[linha], 2
     
     call modoVideo
     call termo
@@ -106,7 +106,7 @@ start:
         cmp al, 51 ; vai pro nivel 3
         je jogo
 
-        cmp al, 'T' ; vai pro tutorial
+        cmp al, 't' ; vai pro tutorial
         je tutorial
 
         cmp al , 27 ; sai do jogo
@@ -118,14 +118,13 @@ start:
 
 termo:
    
+    mov byte[parametro_dx], 44
     mov dx, 28
     mov bx, 115
     mov di, 115
     add di, 16
     mov si, t
     call loop_letras
-
-    call delay
 
     mov dx, 28
     mov bx, 132
@@ -134,16 +133,12 @@ termo:
     mov si, e
     call loop_letras
 
-    call delay
-
     mov dx, 28
     mov bx, 149
     mov di, 149
     add di, 16
     mov si, r
     call loop_letras
-
-    call delay
 
     mov dx, 28
     mov bx, 166
@@ -152,7 +147,6 @@ termo:
     mov si, m
     call loop_letras
 
-    call delay
 
     mov dx, 28
     mov bx, 183
@@ -160,8 +154,6 @@ termo:
     add di, 16
     mov si, o
     call loop_letras
-
-    call delay
 
     mov bl, 10
     mov dh, 11
@@ -226,7 +218,7 @@ loop_letras:
 
     mov cx, bx
     inc dx
-    cmp dx, 44
+    cmp dl, [parametro_dx]
     je .done
 
     .loop1:
@@ -305,6 +297,35 @@ jogo:
     ret
 
 looping: 
+
+    mov byte[parametro_dx], 167
+    mov dx, 165 ; guarda o valor de inicio da coordenada x (dx)
+    mov bx, 118 ; guarda o valor de inicio da coordenada y (cx)
+    mov di, 188 ; guarda o valor do final da coordenada y (cx)
+    mov si, bloco_comprimento
+    call loop_letras
+
+    mov byte[parametro_dx], 145
+    mov dx, 143 ; guarda o valor de inicio da coordenada x (dx)
+    mov bx, 118 ; guarda o valor de inicio da coordenada y (cx)
+    mov di, 188 ; guarda o valor do final da coordenada y (cx)
+    mov si, bloco_comprimento
+    call loop_letras
+
+    mov byte[parametro_dx], 167 ;guarda o valor final da coordenada x (dx)
+    mov dx, 143 ; guarda o valor de inicio da coordenada x (dx)
+    mov bx, 118 ; guarda o valor de inicio da coordenada y (cx)
+    mov di, 119 ; guarda o valor do final da coordenada y (cx)
+    mov si, bloco_comprimento
+    call loop_letras
+
+    mov byte[parametro_dx], 167
+    mov dx, 143 ; guarda o valor de inicio da coordenada x (dx)
+    mov bx, 187 ; guarda o valor de inicio da coordenada y (cx)
+    mov di, 188 ; guarda o valor do final da coordenada y (cx)
+    mov si, bloco_comprimento
+    call loop_letras
+
     call clear_reg
     mov bl, [branco]
 
@@ -340,6 +361,8 @@ looping:
         dec byte[tentativas]
 
         inc byte[linha]
+        inc byte[linha]
+
         mov byte[coluna], 17
         mov di, string          ;string do usuário
         
@@ -351,8 +374,6 @@ looping:
 
         call gets
         call endl
-
-        ;inc byte[flag]
 
         pop dx
         inc dx
@@ -495,7 +516,7 @@ gets:
             inc cx
             stosb
 
-            mov dh, 15
+            mov dh, 19
             mov dl, byte[coluna_entrada]
             call setcursor
 
@@ -521,7 +542,7 @@ gets:
             call delchar
             call delchar
 
-            mov dh, 15
+            mov dh, 19
             mov dl, byte[coluna_entrada]
             call setcursor
             call printchar
@@ -886,7 +907,7 @@ reset_cont:
     mov byte[contador_verde], 0
     mov byte[coluna_entrada], 0
     mov byte[flag], 0
-    mov byte[linha], 4
+    mov byte[linha], 2
     mov byte[venceu], 0
     ret
 
