@@ -1,11 +1,10 @@
-
 org 0x7e00
 jmp 0x0000:start
 
 
 data:
-    string db "00000",0
-    resposta db "00000",0
+    string db "00000",0     ;entrada do usuário
+    resposta db "00000",0   ;termo(palavra correta)
     
     char0_aux db 0
     char1_aux db 0
@@ -13,25 +12,52 @@ data:
     char3_aux db 0
     char4_aux db 0
     
-    termoo db "TERMOO", 0
-    
     verde db 10
     roxo db 5
     branco db 15
-    asterisco db 42
     
     flag db 0
     linha db 0
     coluna db 17
     venceu db 0
+
+    ;mensagens do tutorial
+    title db "APRENDA COMO JOGAR", 0
+    tutorial_1 db "1. Voce tera 7 tentativas para             acertar a palavra", 0
+    tutorial_2 db "2. As palavras terao sempre 5 letras", 0
+    tutorial_3 db "3. Letras na posicao correta serao         marcadas em verde", 0
+    tutorial_4 db "4. Letras na posicao errada serao          marcadas em roxo", 0
+    tutorial_5 db "5. Letras incorretas serao marcadas        em branco", 0
+    tutorial_6 db "1 - Voltar ao Menu", 0
+
+    ;strings do jogo
     derrota_msg db "PERDEU TUDO!", 0
     vitoria_msg db "GANHOU TUDO!", 0
     tentativas_msg db "Tentativas: ", 0
     inicio_msg db "1 - START", 0
     sair_msg db "2 - SAIR", 0
     tutorial_msg db "3 - TUTORIAL", 0
+    strikes_msg db "Strikes: ", 0
+    continuar_msg db "1 - Continuar", 0
+    menu_msg db "2 - Menu", 0
 
-    words db "anzol", 0, "beijo", 0, "curva", 0, "dardo", 0
+    ;variáveis para as palavras aleatórias
+    words db "anzol", 0, "beijo", 0, "curva", 0, "dardo", 0,
+        ; db "esqui", 0, "frevo", 0, "gaita", 0, "hotel", 0,
+        ; db "irado", 0, "jejum", 0, "libra", 0, "mosca", 0,
+        ; db "navio", 0, "ontem", 0, "ponte", 0, "quase", 0,
+        ; db "ruivo", 0, "susto", 0, "turvo", 0, "urubu", 0,
+        ; db "vulto", 0, "voraz", 0, "xerox", 0, "xinga", 0,
+        ; db "zebra", 0, 
+    
+    words2 db "sorvo", 0, "sismo", 0, "toada", 0, "usura", 0,
+           db "urgiu", 0, "xisto", 0, "zarpo", 0, "zinco", 0,
+    
+    words3 db "loyal", 0, "maybe", 0, "style", 0, "speak", 0,
+           db "psych", 0, "tryer", 0, "above", 0, "acted", 0, 
+           db "alien", 0, "guess", 0, "short", 0, "today", 0
+
+
     number_words dw 4
     lenght_words db 6 ;5 letras + 0
     ticks db 0
@@ -41,49 +67,41 @@ data:
     contador_verde db 0
     coluna_entrada db 0
     tentativas db 55 ;corresponde a 7 na tabela asc
+    win_strike db 0 ;numero de vitorias iniciado em 0
 
-    a_green db 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11,
-            db 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11,
-            db 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11,
-            db 11, 11, 11, 11, 11, 15,  0,  0,  0,  0,  0,  0, 11, 11, 11, 11,
-            db 11, 11, 11, 11, 15,  0,  0,  0,  0,  0,  0,  0,  0, 11, 11, 11,
-            db 11, 11, 11, 11, 15,  0,  0, 11, 11, 11, 15,  0,  0, 11, 11, 11,
-            db 11, 11, 11, 11, 15,  0,  0, 11, 11, 11, 15,  0,  0, 11, 11, 11,
-            db 11, 11, 11, 11, 15,  0,  0, 15, 15, 15, 15,  0,  0, 11, 11, 11,
-            db 11, 11, 11, 11, 15,  0,  0,  0,  0,  0,  0,  0,  0, 11, 11, 11,
-            db 11, 11, 11, 11, 15,  0,  0,  0,  0,  0,  0,  0,  0, 11, 11, 11,
-            db 11, 11, 11, 11, 15,  0,  0, 11, 11, 11, 15,  0,  0, 11, 11, 11,
-            db 11, 11, 11, 11, 15,  0,  0, 11, 11, 11, 15,  0,  0, 11, 11, 11,
-            db 11, 11, 11, 11, 15,  0,  0, 11, 11, 11, 15,  0,  0, 11, 11, 11,
-            db 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11,
-            db 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11,
-            db 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11,
 
 start:
     xor ax, ax
     xor dx, dx  
     mov ds, ax
     mov es, ax
-
-    call modoVideo
-
-    mov dh, 4
-    mov dl, 17
-    call setcursor
-    call termo
+    mov byte[win_strike], 0 ;resetando o numero de vitorias
+    mov byte[linha], 3
     
+    call modoVideo
+    call termo
 
     mov dh, 10
     mov dl, 17
     call setcursor
 
-    call getchar
+    .loop:
+        call getchar
+        cmp al, 49
+        je jogo
+        cmp al, 50
+        je fim
+        cmp al, 51
+        je tutorial
+        jmp .loop
 
-    cmp al, 49
-    je jogo
-
+    ret
 
 termo:
+    mov dh, 4
+    mov dl, 17
+    call setcursor
+
     call delay
     mov al, 'T'
     call printchar
@@ -150,6 +168,58 @@ loop_letras:
     .done:
         ret
 
+tutorial:
+    xor dx, dx
+    xor ax, ax
+    call clear
+
+    mov dh, 1 ;linha
+    mov dl, 11 ;coluna
+    call setcursor
+    mov si, title
+    call prints
+
+    mov dh, 4 ;linha
+    mov dl, 2 ;coluna
+    call setcursor
+    mov si, tutorial_1
+    call prints
+
+    mov dh, 7 ;linha
+    call setcursor
+    mov si, tutorial_2
+    call prints
+
+    
+    mov dh, 10 ;linha
+    call setcursor
+    mov si, tutorial_3
+    call prints
+
+    mov dh, 13 ;linha
+    call setcursor
+    mov si, tutorial_4
+    call prints
+
+    mov dh, 16 ;linha
+    call setcursor
+    mov si, tutorial_5
+    call prints
+
+
+    mov dh, 20
+    mov dl, 9
+    call setcursor
+    mov si, tutorial_6
+    call prints
+
+    .loop00:
+    call getchar
+    cmp al, 49 ;se 1 ele volta ao menu
+    je start
+    jmp .loop00
+
+    ret
 
 jogo:
     xor dx, dx
@@ -161,7 +231,20 @@ jogo:
 
 looping: 
     call clear_reg
+    mov bl, [branco]
 
+    ;mostrando numero de strikes
+    mov dl, 1
+    mov dh, 1
+    call setcursor
+    mov si, strikes_msg
+    call prints
+
+    mov al, 48 ;caracter 0
+    add al, byte[win_strike] ;adicionando o numero de tentativas vencidas
+    call printchar
+
+    ;mostrando mensagem de tentativas
     mov dl, 25
     mov dh, 1
     call setcursor
@@ -209,7 +292,7 @@ looping:
         cmp byte[contador_verde], 5
         je vitoria
 
-        call reint_flags    ;reiniciando flags 
+        call reset_flags    ;reiniciando flags 
         cmp byte[tentativas], 48 ;se for 0, perdeu e vai pra derrota
         jne .loop
         jmp derrota
@@ -222,11 +305,40 @@ vitoria:
     mov dl, 13
     call setcursor
 
+    ;mostrando mensagem de vitoria
     mov si, vitoria_msg
     call prints
+    call delay
+    call delay
 
-    call getchar
-    jmp fim
+    mov bl, [branco]
+    mov dh, 18
+    mov dl, 5
+    call setcursor
+    
+    mov si, continuar_msg
+    call prints
+
+    mov dh, 18
+    mov dl, 24
+    call setcursor
+    
+    mov si, menu_msg
+    call prints
+
+    ;resetando os contadores
+    inc byte[win_strike] ;atualizando o numero de vitorias
+    call reset_cont
+
+    .loop0:
+        call getchar
+        cmp al, 49 ;se 1 ele volta ao jogo
+        je jogo
+        cmp al, 50 ;se 2 ele volta ao menu
+        je start
+        jmp .loop0
+        call getchar
+        jmp fim
 
 derrota:
     call clear
@@ -238,8 +350,13 @@ derrota:
     mov si, derrota_msg
     call prints
 
-    call getchar
-    jmp fim
+    call reset_cont
+
+    call delay
+    call delay
+    call delay
+    jmp start
+
 
 modoVideo:
     mov ah, 0
@@ -250,11 +367,8 @@ modoVideo:
     mov ah, 11h
     mov al, 03h
 
-    mov ah, 4Ch
-    int 21h
-
     mov bh, 0
-    mov bl, 15 ;cor
+    mov bl, [branco] ;cor
     int 10h
     
     ret
@@ -551,13 +665,11 @@ compare_char:
 
 
         .purple:
-
             cmp byte[aviso_roxo], 0
             je .printar_purple
             jmp .rodaloop
 
         .printar_purple:
-
             mov bh, 0
             mov bl, [roxo]
             
@@ -660,8 +772,6 @@ define_word:
         .end:
             mov di, resposta        ;vai armazenar a resposta
             call strcpy
-            ;mov si, resposta
-            ;call prints
 
     ret
 
@@ -685,13 +795,24 @@ clear_reg:
     xor cx, cx
     ret
 
-reint_flags:
+reset_flags:
     mov byte[char0_aux], 0
     mov byte[char1_aux], 0
     mov byte[char2_aux], 0
     mov byte[char3_aux], 0
     mov byte[char4_aux], 0
     mov byte[contador_verde], 0
+    ret
+
+reset_cont:
+    mov byte[tentativas], 55 ;resetando numero de tentativas para 7
+    mov byte[aviso_roxo], 0
+    mov byte[coluna_roxa], 0
+    mov byte[contador_verde], 0
+    mov byte[coluna_entrada], 0
+    mov byte[flag], 0
+    mov byte[linha], 4
+    mov byte[venceu], 0
     ret
 
 
