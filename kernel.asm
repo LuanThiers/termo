@@ -20,6 +20,8 @@ data:
     linha db 0
     coluna db 17
     venceu db 0
+    parametro_cx dd 115
+    parametro_cx_final dd 131
 
     ;mensagens do tutorial
     title db "APRENDA COMO JOGAR", 0
@@ -29,21 +31,31 @@ data:
     tutorial_4 db "4. Letras na posicao errada serao          marcadas em roxo", 0
     tutorial_5 db "5. Letras incorretas serao marcadas        em branco", 0
     tutorial_6 db "1 - Voltar ao Menu", 0
-
+    
     ;strings do jogo
     derrota_msg db "PERDEU TUDO!", 0
     vitoria_msg db "GANHOU TUDO!", 0
     tentativas_msg db "Tentativas: ", 0
     inicio_msg db "1 - START", 0
-    sair_msg db "2 - SAIR", 0
-    tutorial_msg db "3 - TUTORIAL", 0
+    sair_msg db "esc - SAIR", 0
+    tutorial_msg db "T - TUTORIAL", 0
     strikes_msg db "Strikes: ", 0
     continuar_msg db "1 - Continuar", 0
     menu_msg db "2 - Menu", 0
+    nivel1 db "1 - NIVEL 1", 0
+    nivel2 db "2 - NIVEL 2", 0
+    nivel3 db "3 - NIVEL 3", 0
 
+    t db 16, 16, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 0, 0, 0, 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 0, 0, 0, 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11
+    e db 16, 16, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 15, 15, 15, 15, 15, 5, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 15, 15, 15, 15, 15, 15, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
+    r db 16, 16, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 0, 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 0, 0, 0, 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 15, 15, 15, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 0, 0, 0, 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 0, 0, 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 15, 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 15, 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 15, 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11
+    m db 16, 16, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 15, 5, 5, 15, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 0, 15, 15, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 15, 0, 0, 15, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 5, 5, 5, 15, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 5, 5, 5, 15, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 5, 5, 5, 15, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 5, 5, 5, 15, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 5, 5, 5, 15, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
+    o db 16, 16, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 0, 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 0, 0, 0, 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 15, 15, 15, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 0, 0, 0, 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 0, 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11
+    
+    
     ;variáveis para as palavras aleatórias
-    words db "anzol", 0, "beijo", 0, "curva", 0, "dardo", 0,
-        ; db "esqui", 0, "frevo", 0, "gaita", 0, "hotel", 0,
+    words1 db "anzol", 0, "beijo", 0, "curva", 0, "dardo", 0,
+         db "esqui", 0, "frevo", 0, "gaita", 0, "hotel", 0
         ; db "irado", 0, "jejum", 0, "libra", 0, "mosca", 0,
         ; db "navio", 0, "ontem", 0, "ponte", 0, "quase", 0,
         ; db "ruivo", 0, "susto", 0, "turvo", 0, "urubu", 0,
@@ -51,14 +63,14 @@ data:
         ; db "zebra", 0, 
     
     words2 db "sorvo", 0, "sismo", 0, "toada", 0, "usura", 0,
-           db "urgiu", 0, "xisto", 0, "zarpo", 0, "zinco", 0,
+           db "urgiu", 0, "xisto", 0, "zarpo", 0, "zinco", 0
     
     words3 db "loyal", 0, "maybe", 0, "style", 0, "speak", 0,
-           db "psych", 0, "tryer", 0, "above", 0, "acted", 0, 
-           db "alien", 0, "guess", 0, "short", 0, "today", 0
+           db "psych", 0, "tryer", 0, "above", 0, "acted", 0 
+           ;db "alien", 0, "guess", 0, "short", 0, "today", 0
 
 
-    number_words dw 4
+    number_words dw 8
     lenght_words db 6 ;5 letras + 0
     ticks db 0
     
@@ -81,64 +93,107 @@ start:
     call modoVideo
     call termo
 
-    mov dh, 10
-    mov dl, 17
-    call setcursor
 
     .loop:
         call getchar
-        cmp al, 49
+
+        cmp al, 49 ; vai pro nivel 1
         je jogo
-        cmp al, 50
-        je fim
-        cmp al, 51
+
+        cmp al, 50 ; vai pro nivel 2
+        je jogo
+
+        cmp al, 51 ; vai pro nivel 3
+        je jogo
+
+        cmp al, 'T' ; vai pro tutorial
         je tutorial
+
+        cmp al , 27 ; sai do jogo
+        je fim
+
         jmp .loop
 
     ret
 
 termo:
-    mov dh, 4
-    mov dl, 17
+   
+    mov dx, 28
+    mov bx, 115
+    mov di, 115
+    add di, 16
+    mov si, t
+    call loop_letras
+
+    call delay
+
+    mov dx, 28
+    mov bx, 132
+    mov di, 132
+    add di, 16
+    mov si, e
+    call loop_letras
+
+    call delay
+
+    mov dx, 28
+    mov bx, 149
+    mov di, 149
+    add di, 16
+    mov si, r
+    call loop_letras
+
+    call delay
+
+    mov dx, 28
+    mov bx, 166
+    mov di, 166
+    add di, 16
+    mov si, m
+    call loop_letras
+
+    call delay
+
+    mov dx, 28
+    mov bx, 183
+    mov di, 183
+    add di, 16
+    mov si, o
+    call loop_letras
+
+    call delay
+
+    mov bl, 10
+    mov dh, 11
+    mov dl, 14
     call setcursor
+    mov si, nivel1
+    call prints
 
-    call delay
-    mov al, 'T'
-    call printchar
+    mov bl, 14
+    mov dh, 13
+    mov dl, 14
+    call setcursor
+    mov si, nivel2
+    call prints
 
-    call delay
-    mov al, 'E'
-    call printchar
+    mov bl, 12
+    mov dh, 15
+    mov dl, 14
+    call setcursor
+    mov si, nivel3
+    call prints
 
-    call delay
-    mov al, 'R'
-    call printchar
-
-    call delay
-    mov al, 'M'
-    call printchar
-
-    call delay
-    mov al, 'O'
-    call printchar
-
-    call delay
-
-    mov dh, 18
+    mov bl, 13
+    mov dl, 17
+    mov dh, 22
     mov dl, 2
     call setcursor
     
-    mov si, inicio_msg
-    call prints
-
-    mov dh, 18
-    mov dl, 14
-    call setcursor
-
     mov si, sair_msg
     call prints
 
-    mov dh, 18
+    mov dh, 22
     mov dl, 26
     call setcursor
 
@@ -147,12 +202,31 @@ termo:
 
     ret
 
+define_nivel:
+    cmp al, 49
+    je .nivel1
 
+    cmp al, 50
+    je .nivel2
+
+    cmp al, 51
+    je .nivel3
+
+    .nivel1:
+        mov si, words1
+        ret
+    .nivel2:
+        mov si, words2
+        ret
+    .nivel3:
+        mov si, words3
+        ret
+        
 loop_letras:
 
-    mov cx, 0
+    mov cx, bx
     inc dx
-    cmp dx, 16
+    cmp dx, 44
     je .done
 
     .loop1:
@@ -161,7 +235,7 @@ loop_letras:
         mov ah, 0ch
         inc cx
         int 10h
-        cmp cx, 16
+        cmp cx, di
         je loop_letras
         jmp .loop1
 
@@ -222,6 +296,7 @@ tutorial:
     ret
 
 jogo:
+    call define_nivel
     xor dx, dx
     xor ax, ax
     call clear
@@ -234,7 +309,7 @@ looping:
     mov bl, [branco]
 
     ;mostrando numero de strikes
-    mov dl, 1
+    mov dl, 3
     mov dh, 1
     call setcursor
     mov si, strikes_msg
@@ -757,7 +832,7 @@ define_word:
     mov [ticks], dx         ;em ticks vai ter o índice da palavra que será usada
 
     xor cx, cx
-    mov si, words           ;colocando as palavras em si
+    ;mov si, words           ;colocando as palavras em si
     mov ax, [ticks]
     mul byte[lenght_words]  ;multiplica o índice pelo tamanho das palavras para achar índice da 1 letra da palavra(ax)
     mov dx, ax              ;coloca em dx o índice que quer chegar
