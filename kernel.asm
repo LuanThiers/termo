@@ -15,12 +15,17 @@ data:
     verde db 10
     roxo db 5
     branco db 15
+    light_magenta db 13
     
     flag db 0
     linha db 0
     coluna db 17
     venceu db 0
     parametro_dx db 142
+
+    flag_nivel1 db 0
+    flag_nivel2 db 0
+    flag_nivel3 db 0
 
     ;mensagens do tutorial
     title db "APRENDA COMO JOGAR", 0
@@ -29,48 +34,145 @@ data:
     tutorial_3 db "3. Letras na posicao correta serao         marcadas em verde", 0
     tutorial_4 db "4. Letras na posicao errada serao          marcadas em roxo", 0
     tutorial_5 db "5. Letras incorretas serao marcadas        em branco", 0
-    tutorial_6 db "1 - Voltar ao Menu", 0
+    tutorial_6 db "[1] Voltar ao Menu", 0
     
     ;strings do jogo
     derrota_msg db "PERDEU TUDO!", 0
     vitoria_msg db "GANHOU TUDO!", 0
     tentativas_msg db "Tentativas: ", 0
-    inicio_msg db "1 -> START", 0
-    sair_msg db "esc-> Sair", 0
-    tutorial_msg db "T-> Tutorial", 0
+    sair_msg db "[esc] Sair", 0
+    tutorial_msg db "[T] Tutorial", 0
     strikes_msg db "Strikes: ", 0
-    continuar_msg db "1-> Continuar", 0
-    menu_msg db "2-> Menu", 0
-    nivel1 db "1-> NIVEL 1", 0
-    nivel2 db "2-> NIVEL 2", 0
-    nivel3 db "3-> NIVEL 3", 0
+    continuar_msg db "[1] Continuar", 0
+    menu_msg db "[2] Menu", 0
+    nivel1 db "[1] NIVEL 1", 0
+    nivel2 db "[2] NIVEL 2", 0
+    nivel3 db "[3] NIVEL 3", 0
 
-    t db 16, 16, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 0, 0, 0, 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 0, 0, 0, 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11
-    e db 16, 16, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 15, 15, 15, 15, 15, 5, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 15, 15, 15, 15, 15, 15, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
-    r db 16, 16, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 0, 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 0, 0, 0, 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 15, 15, 15, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 0, 0, 0, 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 0, 0, 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 15, 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 15, 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 15, 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11
-    m db 16, 16, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 15, 5, 5, 15, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 0, 15, 15, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 15, 0, 0, 15, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 5, 5, 5, 15, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 5, 5, 5, 15, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 5, 5, 5, 15, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 5, 5, 5, 15, 0, 0, 5, 5, 5, 5, 5, 5, 5, 15, 0, 0, 5, 5, 5, 15, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
-    o db 16, 16, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 0, 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 0, 0, 0, 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 11, 11, 11, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 15, 15, 15, 15, 0, 0, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 0, 0, 0, 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 15, 0, 0, 0, 0, 0, 0, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11
+    t db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13,  0,  0,  0,  0,  0,  0,  0,  0, 13, 13, 13, 13,
+      db 13, 13, 13, 13,  0,  0,  0,  0,  0,  0,  0,  0, 13, 13, 13, 13,
+      db 13, 13, 13, 13, 13, 13, 13,  0,  0, 13, 13, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13, 13, 13, 13,  0,  0, 13, 13, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13, 13, 13, 13,  0,  0, 13, 13, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13, 13, 13, 13,  0,  0, 13, 13, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13, 13, 13, 13,  0,  0, 13, 13, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13, 13, 13, 13,  0,  0, 13, 13, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13, 13, 13, 13,  0,  0, 13, 13, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13, 13, 13, 13,  0,  0, 13, 13, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
+
+    e db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13,  0,  0,  0,  0,  0,  0,  0,  0, 13, 13, 13, 13,
+      db 13, 13, 13, 13,  0,  0,  0,  0,  0,  0,  0,  0, 13, 13, 13, 13,
+      db 13, 13, 13, 13,  0,  0, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13,  0,  0, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13,  0,  0,  0,  0,  0,  0,  0, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13,  0,  0,  0,  0,  0,  0,  0, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13,  0,  0, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13,  0,  0, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13,  0,  0,  0,  0,  0,  0,  0,  0, 13, 13, 13, 13,
+      db 13, 13, 13, 13,  0,  0,  0,  0,  0,  0,  0,  0, 13, 13, 13, 13,
+      db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
+
+    r db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13, 13,  0,  0,  0,  0,  0,  0, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13,  0,  0,  0,  0,  0,  0,  0,  0, 13, 13, 13, 13,
+      db 13, 13, 13, 13,  0,  0, 13, 13, 13, 13,  0,  0, 13, 13, 13, 13,
+      db 13, 13, 13, 13,  0,  0, 13, 13, 13, 13,  0,  0, 13, 13, 13, 13,
+      db 13, 13, 13, 13,  0,  0,  0,  0,  0,  0,  0,  0, 13, 13, 13, 13,
+      db 13, 13, 13, 13,  0,  0,  0,  0,  0,  0,  0, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13,  0,  0,  0,  0,  0, 13, 13, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13,  0,  0, 13,  0,  0,  0, 13, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13,  0,  0, 13, 13,  0,  0,  0, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13,  0,  0, 13, 13, 13,  0,  0,  0, 13, 13, 13, 13,
+      db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
+
+    m db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13
+      db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13
+      db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13
+      db 13, 13, 13, 13,  0,  0, 13, 13, 13, 13,  0,  0, 13, 13, 13, 13
+      db 13, 13, 13, 13,  0,  0,  0, 13, 13,  0,  0,  0, 13, 13, 13, 13
+      db 13, 13, 13, 13,  0,  0,  0,  0,  0,  0,  0,  0, 13, 13, 13, 13
+      db 13, 13, 13, 13,  0,  0,  0,  0,  0,  0,  0,  0, 13, 13, 13, 13
+      db 13, 13, 13, 13,  0,  0, 13,  0,  0, 13,  0,  0, 13, 13, 13, 13
+      db 13, 13, 13, 13,  0,  0, 13, 13, 13, 13,  0,  0, 13, 13, 13, 13
+      db 13, 13, 13, 13,  0,  0, 13, 13, 13, 13,  0,  0, 13, 13, 13, 13
+      db 13, 13, 13, 13,  0,  0, 13, 13, 13, 13,  0,  0, 13, 13, 13, 13
+      db 13, 13, 13, 13,  0,  0, 13, 13, 13, 13,  0,  0, 13, 13, 13, 13
+      db 13, 13, 13, 13,  0,  0, 13, 13, 13, 13,  0,  0, 13, 13, 13, 13
+      db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13
+      db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13
+      db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13
+
+    o db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13, 13,  0,  0,  0,  0,  0,  0, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13,  0,  0,  0,  0,  0,  0,  0,  0, 13, 13, 13, 13,
+      db 13, 13, 13, 13,  0,  0, 13, 13, 13, 13,  0,  0, 13, 13, 13, 13,
+      db 13, 13, 13, 13,  0,  0, 13, 13, 13, 13,  0,  0, 13, 13, 13, 13,
+      db 13, 13, 13, 13,  0,  0, 13, 13, 13, 13,  0,  0, 13, 13, 13, 13,
+      db 13, 13, 13, 13,  0,  0, 13, 13, 13, 13,  0,  0, 13, 13, 13, 13,
+      db 13, 13, 13, 13,  0,  0, 13, 13, 13, 13,  0,  0, 13, 13, 13, 13,
+      db 13, 13, 13, 13,  0,  0, 13, 13, 13, 13,  0,  0, 13, 13, 13, 13,
+      db 13, 13, 13, 13,  0,  0,  0,  0,  0,  0,  0,  0, 13, 13, 13, 13,
+      db 13, 13, 13, 13, 13,  0,  0,  0,  0,  0,  0, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
+      db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
+
     
-    bloco_comprimento db 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 , 4,4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 , 4,4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 , 4,4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 , 4,4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 , 4
+    bloco_comprimento db 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+                      db 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+                      db 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+                      db 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+                      db 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+    
     bloco_largura db 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 , 4
+
     ;variáveis para as palavras aleatórias
     words1 db "anzol", 0, "beijo", 0, "curva", 0, "dardo", 0,
-         db "esqui", 0, "frevo", 0, "gaita", 0, "hotel", 0
+        ; db "esqui", 0, "frevo", 0, "gaita", 0, "hotel", 0,
         ; db "irado", 0, "jejum", 0, "libra", 0, "mosca", 0,
         ; db "navio", 0, "ontem", 0, "ponte", 0, "quase", 0,
         ; db "ruivo", 0, "susto", 0, "turvo", 0, "urubu", 0,
         ; db "vulto", 0, "voraz", 0, "xerox", 0, "xinga", 0,
-        ; db "zebra", 0, 
+        ; db "zebra", 0, "trave", 0, "reino", 0, "fungo", 0,
+        ; db "ideia", 0, "poder", 0, "ordem", 0, "muito", 0,
+        ; db "sonho", 0, "dengo", 0, "tempo", 0, "justo", 0,
+        ; db "amigo", 0
     
-    words2 db "sorvo", 0, "sismo", 0, "toada", 0, "usura", 0,
-           db "urgiu", 0, "xisto", 0, "zarpo", 0, "zinco", 0
+    words2 db "zinco", 0, "xisto", 0, "anexo", 0, "usura", 0,
+         ; db "sagaz", 0, "sutil", 0, "sanar", 0, "moral", 0,
+         ; db "etnia", 0, "lapso", 0, "expor", 0, "haver", 0,
+         ; db "tange", 0, "sobre", 0, "audaz", 0, "vigor", 0,
+         ; db "assim", 0, "nobre", 0, "lorde", 0, "plena", 0,
+         ; db "desde", 0, "honra", 0, "dever", 0, "prole", 0,
+         ; db "temor", 0, "tumor", 0, "sendo", 0, "ceder", 0,
+         ; db "comum", 0, "senso", 0, "vulgo", 0, "denso", 0,
     
     words3 db "loyal", 0, "maybe", 0, "style", 0, "speak", 0,
-           db "psych", 0, "tryer", 0, "above", 0, "acted", 0 
-           ;db "alien", 0, "guess", 0, "short", 0, "today", 0
+         ; db "psych", 0, "tryer", 0, "above", 0, "acted", 0,
+         ; db "alien", 0, "guess", 0, "short", 0, "today", 0,
+         ; db "right", 0, "bread", 0, "chair", 0, "floor", 0
+         ; db "glass", 0, "grass", 0, "horse", 0, "house", 0
+         ; db "money", 0, "night", 0, "party", 0, "point", 0
 
 
-    number_words dw 8
+    number_words dw 4
     lenght_words db 6 ;5 letras + 0
     ticks db 0
     
@@ -90,21 +192,25 @@ start:
     mov byte[win_strike], 0 ;resetando o numero de vitorias
     mov byte[linha], 2
     
+    mov byte[flag_nivel1], 0
+    mov byte[flag_nivel2], 0
+    mov byte[flag_nivel3], 0
+
+
     call modoVideo
     call termo
-
 
     .loop:
         call getchar
 
         cmp al, 49 ; vai pro nivel 1
-        je jogo
+        je define_nivel
 
         cmp al, 50 ; vai pro nivel 2
-        je jogo
+        je define_nivel
 
         cmp al, 51 ; vai pro nivel 3
-        je jogo
+        je define_nivel
 
         cmp al, 't' ; vai pro tutorial
         je tutorial
@@ -194,45 +300,9 @@ termo:
 
     ret
 
-define_nivel:
-    cmp al, 49
-    je .nivel1
 
-    cmp al, 50
-    je .nivel2
-
-    cmp al, 51
-    je .nivel3
-
-    .nivel1:
-        mov si, words1
-        ret
-    .nivel2:
-        mov si, words2
-        ret
-    .nivel3:
-        mov si, words3
-        ret
         
-loop_letras:
 
-    mov cx, bx
-    inc dx
-    cmp dl, [parametro_dx]
-    je .done
-
-    .loop1:
-
-        lodsb
-        mov ah, 0ch
-        inc cx
-        int 10h
-        cmp cx, di
-        je loop_letras
-        jmp .loop1
-
-    .done:
-        ret
 
 tutorial:
     xor dx, dx
@@ -287,8 +357,10 @@ tutorial:
 
     ret
 
+
+
 jogo:
-    call define_nivel
+    ;call define_nivel
     xor dx, dx
     xor ax, ax
     call clear
@@ -296,8 +368,160 @@ jogo:
     call looping
     ret
 
+define_nivel:
+    cmp al, 49
+    je .nivel1
+
+    cmp al, 50
+    je .nivel2
+
+    cmp al, 51
+    je .nivel3
+
+    .nivel1:
+        mov si, words1
+        mov byte[flag_nivel1], 1
+        mov byte[flag_nivel2], 0
+        mov byte[flag_nivel3], 0
+        jmp jogo
+        
+    .nivel2:
+        mov si, words2
+        mov byte[flag_nivel1], 0
+        mov byte[flag_nivel2], 1
+        mov byte[flag_nivel3], 0
+        jmp jogo
+    .nivel3:
+        mov si, words3
+        mov byte[flag_nivel1], 0
+        mov byte[flag_nivel2], 0
+        mov byte[flag_nivel3], 1
+        jmp jogo
+
+clock:
+    mov ah, 0   ;lê relógio (conta ticks a partir de 00h) e salva em cx:dx
+    int 1ah 
+    mov [ticks], dx
+    ret
+
+define_word:
+    call clock
+
+    xor dx, dx
+    xor ax, ax
+    xor cx, cx
+
+    mov ax, [ticks]
+    mov cx, [number_words]
+    div cx                  ;divide ax por cx e coloca resto em dx
+    mov [ticks], dx         ;em ticks vai ter o índice da palavra que será usada
+
+    xor cx, cx
+    ;mov si, words           ;colocando as palavras em si
+    mov ax, [ticks]
+    mul byte[lenght_words]  ;multiplica o índice pelo tamanho das palavras para achar índice da 1 letra da palavra(ax)
+    mov dx, ax              ;coloca em dx o índice que quer chegar
+    sub dx, 1               ;voltando uma posição para não perder o primeiro caracter das palavras
+
+    .loop:
+        lodsb
+        cmp cx, dx
+        je .end
+        inc cx
+        jmp .loop
+        .end:
+            mov di, resposta        ;vai armazenar a resposta
+            call strcpy
+
+    ret
+
+
+strcpy:
+    xor cx, cx
+    .loop1:
+        lodsb
+        stosb
+        cmp cx, 6       ;se chegou em 6, copiou tudo que precisava pra resposta
+        je .endloop1
+        inc cx
+        jmp .loop1
+
+    .endloop1:
+        ret
+
 looping: 
 
+    call print_bloco
+    call clear_reg
+    mov bl, [light_magenta]
+
+    ;mostrando numero de strikes
+    mov dl, 3
+    mov dh, 1
+    call setcursor
+    mov si, strikes_msg
+    call prints
+
+    mov al, 48 ;caracter 0
+    add ax, [win_strike] ;adicionando o numero de tentativas vencidas
+    call printchar
+
+    ;mostrando mensagem de tentativas
+    mov dl, 25
+    mov dh, 1
+    call setcursor
+    mov si, tentativas_msg
+    call prints
+
+
+    .loop:
+        ;setando o cursor pra printar tentativas
+        mov dl, 37
+        mov dh, 1
+        call setcursor
+
+        ;printa tentativas
+        mov bl, [light_magenta]
+        mov al, byte[tentativas]
+        call printchar
+        dec byte[tentativas]
+
+        inc byte[linha]
+        inc byte[linha]
+        mov byte[coluna], 17
+        
+        mov di, string          ;string do usuário
+        push dx
+
+        ;lendo a string do usuário
+        mov dl, 17
+        mov dh, byte[linha]
+        call setcursor
+        call gets
+        call endl
+
+        pop dx
+        inc dx
+
+        push dx
+        call search_green
+        call search_purple
+        pop dx 
+
+        call delay ;para mostrar o resultado da última tentativa
+        call reset_flags    ;reiniciando flags 
+
+        cmp byte[contador_verde], 5
+        je vitoria
+
+        mov byte[contador_verde], 0
+        cmp byte[tentativas], 48 ;se for 0, perdeu e vai pra derrota
+        jne .loop
+        jmp derrota
+
+    ret 
+
+print_bloco:
     mov byte[parametro_dx], 167
     mov dx, 165 ; guarda o valor de inicio da coordenada x (dx)
     mov bx, 118 ; guarda o valor de inicio da coordenada y (cx)
@@ -325,75 +549,256 @@ looping:
     mov di, 188 ; guarda o valor do final da coordenada y (cx)
     mov si, bloco_comprimento
     call loop_letras
+    ret
 
-    call clear_reg
-    mov bl, [branco]
+loop_letras:
 
-    ;mostrando numero de strikes
-    mov dl, 3
-    mov dh, 1
-    call setcursor
-    mov si, strikes_msg
-    call prints
+    mov cx, bx
+    inc dx
+    cmp dl, [parametro_dx]
+    je .done
 
-    mov al, 48 ;caracter 0
-    add al, byte[win_strike] ;adicionando o numero de tentativas vencidas
-    call printchar
+    .loop1:
 
-    ;mostrando mensagem de tentativas
-    mov dl, 25
-    mov dh, 1
-    call setcursor
-    mov si, tentativas_msg
-    call prints
+        lodsb
+        mov ah, 0ch
+        inc cx
+        int 10h
+        cmp cx, di
+        je loop_letras
+        jmp .loop1
 
+    .done:
+        ret
+
+search_green:
+    mov si, string     ;caracteres em al
+    mov dx, 0           ;dx como indice de string
+
+    mov di, resposta    ;voltando ponteiro para o início de resposta
+    mov cx, 0           ;cx como indice de resposta
 
     .loop:
-        ;setando o cursor pra printar tentativas
-        mov dl, 37
-        mov dh, 1
-        call setcursor
+        lodsb
+        cmp dx, 5
+        je .end
+        cmp al, byte[di] ;se for igual, como estão no mesmo índice, é verde
+        je .green
+        inc dx
+        inc cx
+        inc di
+        jmp .loop
 
-        ;printa tentativas
-        mov bl, [branco]
-        mov al, byte[tentativas]
-        call printchar
-        dec byte[tentativas]
-
-        inc byte[linha]
-        inc byte[linha]
-
-        mov byte[coluna], 17
-        mov di, string          ;string do usuário
+        .end:
+            ret
         
-        push dx
+        .green: ;vai colocar asterisco na posição que deve ser verde
+            cmp cx, 0
+            je .char0
+            cmp cx, 1
+            je .char1
+            cmp cx, 2
+            je .char2
+            cmp cx, 3
+            je .char3
+            cmp cx, 4
+            je .char4
 
-        mov dl, 17
+            .char0:
+                mov byte[char0_aux], 42
+                jmp .endgreen
+            .char1:
+                mov byte[char1_aux], 42
+                jmp .endgreen
+            .char2:
+                mov byte[char2_aux], 42
+                jmp .endgreen
+            .char3:
+                mov byte[char3_aux], 42
+                jmp .endgreen
+            .char4:
+                mov byte[char4_aux], 42
+                jmp .endgreen
+
+            .endgreen:
+                inc dx
+                inc cx
+                inc di
+                jmp .loop
+
+search_purple:
+    mov si, string     ;caracteres em al
+    mov dx, 0           ;dx como indice de string
+
+    .loop_string:
+        cmp dx, 5     ;cabou string
+        je .end
+        
+        mov di, resposta    ;voltando ponteiro para o início de resposta
+        mov cx, 0           ;cx como indice de resposta
+        lodsb               ;pega próximo caracter de string e coloca em al
+        call compare_char   ;comparar 1 caracter de string com resposta
+        inc dx              ;incrementa contador de string  
+
+        jmp .loop_string
+
+        .end:
+            call endl
+            ret
+
+
+compare_char: 
+    cmp cx,5          ;cabou caracteres de resposta
+    je .endcomp
+    
+    cmp al, byte[di]  ;al = caracter de string, di = caracter de resposta
+    je .definecolor
+    jmp .rodaloop 
+    
+
+    .endcomp:           ;se acabou e não printou letra verde ou 
+
+        call delay
+
+        cmp byte[aviso_roxo], 1
+        je .retorno
+
+        mov bh, 0       ;amarelo, printa a letra branca
+        mov bl, [branco] 
+
+        push dx
+        xor dx, dx
+        mov dl, byte[coluna]
         mov dh, byte[linha]
         call setcursor
 
-        call gets
-        call endl
+        call printchar
 
+        xor dx, dx
+        inc byte[coluna]
         pop dx
-        inc dx
+        
+        ret
+    
+    .retorno:
+        mov byte[aviso_roxo], 0
+        ret
 
-        push dx
-        call search_green
-        call search_purple
-        pop dx 
+    .rodaloop:
+        inc di            ;próximo caracter de string
+        inc cx            ;incrementa contador de resposta
+        jmp compare_char 
 
-        call delay ;para mostrar o resultado da última tentativa
 
-        cmp byte[contador_verde], 5
-        je vitoria
+    .definecolor:
 
-        call reset_flags    ;reiniciando flags 
-        cmp byte[tentativas], 48 ;se for 0, perdeu e vai pra derrota
-        jne .loop
-        jmp derrota
+        call delay
 
-    ret 
+        cmp dx, cx           ;se contadores são iguais: posição certa(verde)
+        je .green           
+        
+        cmp cx, 0            ;se não está na posição certa, PODE ser roxo
+        je .checkasteristico0
+        cmp cx, 1            
+        je .checkasteristico1
+        cmp cx, 2
+        je .checkasteristico2
+        cmp cx, 3
+        je .checkasteristico3
+        cmp cx, 4 
+        je .checkasteristico4
+
+        .checkasteristico0:
+            cmp byte[char0_aux], 42  ;se for * é pq é verde e já foi colocado
+            je .rodaloop
+            mov byte[char0_aux], 42
+            jmp .purple
+        
+        .checkasteristico1:
+            cmp byte[char1_aux], 42  ;se for * é pq é verde e já foi colocado
+            je .rodaloop
+            mov byte[char1_aux], 42
+            jmp .purple
+        
+        .checkasteristico2:
+            cmp byte[char2_aux], 42  ;se for * é pq é verde e já foi colocado
+            je .rodaloop
+            mov byte[char2_aux], 42
+            jmp .purple
+        
+        .checkasteristico3:
+            cmp byte[char3_aux], 42  ;se for * é pq é verde e já foi colocado
+            je .rodaloop
+            mov byte[char3_aux], 42
+            jmp .purple
+        
+        .checkasteristico4:
+            cmp byte[char4_aux], 42  ;se for * é pq é verde e já foi colocado
+            je .rodaloop
+            mov byte[char4_aux], 42
+            jmp .purple
+
+
+        .purple:
+            cmp byte[aviso_roxo], 0
+            je .printar_purple
+            jmp .rodaloop
+
+        .printar_purple:
+            mov bh, 0
+            mov bl, [roxo]
+            
+            push dx
+            xor dx, dx
+            mov dl, byte[coluna]
+            mov dh, byte[linha]
+            call setcursor
+            call printchar
+
+            inc byte[coluna]
+            pop dx
+
+            mov byte[aviso_roxo], 1
+
+            jmp .rodaloop  
+
+        .green:
+            mov bh, 0
+            mov bl, [verde]
+
+            cmp byte[aviso_roxo], 1
+            je .letra_verde_dupla
+
+            push dx
+            xor dx, dx
+            mov dl, byte[coluna]
+            mov dh, byte[linha]
+            call setcursor
+
+            call printchar
+            inc byte[coluna]
+            pop dx
+
+            inc byte[contador_verde]
+
+            ret
+
+        .letra_verde_dupla:
+            
+            mov byte[aviso_roxo], 0
+            push dx
+            xor dx, dx
+            dec byte[coluna]
+            mov dl, byte[coluna]
+            mov dh, byte[linha]
+            call setcursor
+
+            call printchar
+            inc byte[coluna]
+            pop dx
+
+            ret
+
 
 vitoria:
     call clear
@@ -407,15 +812,15 @@ vitoria:
     call delay
     call delay
 
-    mov bl, [branco]
-    mov dh, 18
+    mov bl, [light_magenta]
+    mov dh, 20
     mov dl, 5
     call setcursor
     
     mov si, continuar_msg
     call prints
 
-    mov dh, 18
+    mov dh, 20
     mov dl, 24
     call setcursor
     
@@ -429,12 +834,32 @@ vitoria:
     .loop0:
         call getchar
         cmp al, 49 ;se 1 ele volta ao jogo
-        je jogo
+        je confere_nivel
         cmp al, 50 ;se 2 ele volta ao menu
         je start
         jmp .loop0
         call getchar
         jmp fim
+
+confere_nivel:
+    cmp byte[flag_nivel1], 1
+    je .nivel1
+
+    cmp byte[flag_nivel2], 1
+    je .nivel2
+
+    cmp byte[flag_nivel3], 1
+    je .nivel3
+
+    .nivel1:
+        mov si, words1
+        jmp jogo
+    .nivel2:
+        mov si, words2
+        jmp jogo
+    .nivel3:
+        mov si, words3
+        jmp jogo
 
 derrota:
     call clear
@@ -584,6 +1009,54 @@ delchar:
 
     ret
 
+tostring:             
+    push di
+    .loop1:
+        cmp ax, 0
+        je .endloop1
+        xor dx, dx
+        mov bx, 10
+        div bx           
+        xchg ax, dx       
+        add ax, 48        
+        stosb
+        xchg ax, dx
+        jmp .loop1
+    .endloop1:
+        pop si
+        cmp si, di
+        jne .done
+        mov al, 48
+        stosb
+    .done:
+        mov al, 0
+        stosb
+        call reverse
+        ret
+
+reverse:             
+    mov di, si
+    xor cx, cx          
+    .loop1:            
+        lodsb
+        cmp al, 0
+        je .endloop1
+        inc cl
+        push ax
+        jmp .loop1
+    .endloop1:
+    .loop2:            
+        cmp cl, 0
+        je .endloop2
+        dec cl
+        pop ax
+        stosb
+        jmp .loop2
+
+    .endloop2:
+        ret
+
+
 
 endl:
     mov al, 0x0a
@@ -592,239 +1065,19 @@ endl:
     call printchar
 
     ret
-
-search_green:
-
-    mov si, string     ;caracteres em al
-    mov dx, 0           ;dx como indice de string
-
-    mov di, resposta    ;voltando ponteiro para o início de resposta
-    mov cx, 0           ;cx como indice de resposta
-
-    .loop:
-
-        lodsb
-        cmp dx, 5
-        je .end
-        cmp al, byte[di]
-        je .green
-        inc dx
-        inc cx
-        inc di
-        jmp .loop
-
-        .end:
-            ret
-        
-        .green:
-
-            cmp cx, 0
-            je .char0
-            cmp cx, 1
-            je .char1
-            cmp cx, 2
-            je .char2
-            cmp cx, 3
-            je .char3
-            cmp cx, 4
-            je .char4
-
-            .char0:
-                mov byte[char0_aux], 42
-                jmp .endgreen
-            .char1:
-                mov byte[char1_aux], 42
-                jmp .endgreen
-            .char2:
-                mov byte[char2_aux], 42
-                jmp .endgreen
-            .char3:
-                mov byte[char3_aux], 42
-                jmp .endgreen
-            .char4:
-                mov byte[char4_aux], 42
-                jmp .endgreen
-
-            .endgreen:
-                inc dx
-                inc cx
-                inc di
-                jmp .loop
-
-
-search_purple:
-    mov si, string     ;caracteres em al
-    mov dx, 0           ;dx como indice de string
-
-    .loop_string:
-        cmp dx, 5     ;cabou string
-        je .end
-        
-        mov di, resposta    ;voltando ponteiro para o início de resposta
-        mov cx, 0           ;cx como indice de resposta
-        lodsb               ;pega próximo caracter de string e coloca em al
-        call compare_char   ;comparar 1 caracter de string com resposta
-        inc dx              ;incrementa contador de string  
-
-        jmp .loop_string
-
-        .end:
-            call endl
-            ret
-
-
-compare_char: 
-    cmp cx,5          ;cabou caracteres de resposta
-    je .endcomp
-    
-    cmp al, byte[di]  ;al = caracter de string, di = caracter de resposta
-    je .definecolor
-    jmp .rodaloop 
-    
-
-    .endcomp:           ;se acabou e não printou letra verde ou 
-
-        cmp byte[aviso_roxo], 1
-        je .retorno
-
-        mov bh, 0       ;amarelo, printa a letra branca
-        mov bl, [branco] 
-
-        push dx
-        xor dx, dx
-        mov dl, byte[coluna]
-        mov dh, byte[linha]
-        call setcursor
-
-        call printchar
-
-        xor dx, dx
-        inc byte[coluna]
-        pop dx
-        
-        ret
-    
-    .retorno:
-        mov byte[aviso_roxo], 0
-        ret
-
-    .rodaloop:
-        inc di            ;próximo caracter de string
-        inc cx            ;incrementa contador de resposta
-        jmp compare_char 
-
-
-    .definecolor:
-        cmp dx, cx           ;se contadores são iguais: posição certa(verde)
-        je .green           
-        
-        cmp cx, 0            ;se não está na posição certa, PODE ser roxo
-        je .checkasteristico0
-        cmp cx, 1            
-        je .checkasteristico1
-        cmp cx, 2
-        je .checkasteristico2
-        cmp cx, 3
-        je .checkasteristico3
-        cmp cx, 4 
-        je .checkasteristico4
-
-        .checkasteristico0:
-            cmp byte[char0_aux], 42  ;se for * é pq é verde e já foi colocado
-            je .rodaloop
-            mov byte[char0_aux], 42
-            jmp .purple
-        
-        .checkasteristico1:
-            cmp byte[char1_aux], 42  ;se for * é pq é verde e já foi colocado
-            je .rodaloop
-            mov byte[char1_aux], 42
-            jmp .purple
-        
-        .checkasteristico2:
-            cmp byte[char2_aux], 42  ;se for * é pq é verde e já foi colocado
-            je .rodaloop
-            mov byte[char2_aux], 42
-            jmp .purple
-        
-        .checkasteristico3:
-            cmp byte[char3_aux], 42  ;se for * é pq é verde e já foi colocado
-            je .rodaloop
-            mov byte[char3_aux], 42
-            jmp .purple
-        
-        .checkasteristico4:
-            cmp byte[char4_aux], 42  ;se for * é pq é verde e já foi colocado
-            je .rodaloop
-            mov byte[char4_aux], 42
-            jmp .purple
-
-
-        .purple:
-            cmp byte[aviso_roxo], 0
-            je .printar_purple
-            jmp .rodaloop
-
-        .printar_purple:
-            mov bh, 0
-            mov bl, [roxo]
-            
-            push dx
-            xor dx, dx
-            mov dl, byte[coluna]
-            mov dh, byte[linha]
-            call setcursor
-            call printchar
-
-            inc byte[coluna]
-            pop dx
-
-            mov byte[aviso_roxo], 1
-
-            jmp .rodaloop  
-
-        .green:
-            mov bh, 0
-            mov bl, [verde]
-
-            cmp byte[aviso_roxo], 1
-            je .letra_verde_dupla
-
-            push dx
-            xor dx, dx
-            mov dl, byte[coluna]
-            mov dh, byte[linha]
-            call setcursor
-
-            call printchar
-            inc byte[coluna]
-            pop dx
-
-            inc byte[contador_verde]
-
-            ret
-
-        .letra_verde_dupla:
-            
-            mov byte[aviso_roxo], 0
-            push dx
-            xor dx, dx
-            dec byte[coluna]
-            mov dl, byte[coluna]
-            mov dh, byte[linha]
-            call setcursor
-
-            call printchar
-            inc byte[coluna]
-            pop dx
-
-            ret
          
 delay:
+
+   push cx
+   push dx
+
    mov ah, 86h
    mov cx,5
    mov dx,400
    int 15h
+
+   pop dx
+   pop cx
     ret
 
 setcursor:
@@ -833,57 +1086,6 @@ setcursor:
     int 10h
     ret
 
-
-clock:
-    mov ah, 0   ;lê relógio (conta ticks a partir de 00h) e salva em cx:dx
-    int 1ah 
-    mov [ticks], dx
-    ret
-
-define_word:
-    call clock
-
-    xor dx, dx
-    xor ax, ax
-    xor cx, cx
-
-    mov ax, [ticks]
-    mov cx, [number_words]
-    div cx                  ;divide ax por cx e coloca resto em dx
-    mov [ticks], dx         ;em ticks vai ter o índice da palavra que será usada
-
-    xor cx, cx
-    ;mov si, words           ;colocando as palavras em si
-    mov ax, [ticks]
-    mul byte[lenght_words]  ;multiplica o índice pelo tamanho das palavras para achar índice da 1 letra da palavra(ax)
-    mov dx, ax              ;coloca em dx o índice que quer chegar
-    sub dx, 1               ;voltando uma posição para não perder o primeiro caracter das palavras
-
-    .loop:
-        lodsb
-        cmp cx, dx
-        je .end
-        inc cx
-        jmp .loop
-        .end:
-            mov di, resposta        ;vai armazenar a resposta
-            call strcpy
-
-    ret
-
-
-strcpy:
-    xor cx, cx
-    .loop1:
-        lodsb
-        stosb
-        cmp cx, 6       ;se chegou em 6, copiou tudo que precisava pra resposta
-        je .endloop1
-        inc cx
-        jmp .loop1
-
-    .endloop1:
-        ret
 
 clear_reg:
     xor ax, ax
@@ -897,7 +1099,6 @@ reset_flags:
     mov byte[char2_aux], 0
     mov byte[char3_aux], 0
     mov byte[char4_aux], 0
-    mov byte[contador_verde], 0
     ret
 
 reset_cont:
